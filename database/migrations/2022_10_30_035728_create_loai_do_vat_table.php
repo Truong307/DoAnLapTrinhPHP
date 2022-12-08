@@ -17,8 +17,7 @@ class CreateLoaiDoVatTable extends Migration
             $table->id();
             $table->Integer('ma');
             $table->string('ten');
-            $table->string('hinh_anh');
-            $table->Integer('parentid');
+            $table->Integer('parentid')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,5 +31,6 @@ class CreateLoaiDoVatTable extends Migration
     public function down()
     {
         Schema::dropIfExists('loai_do_vat');
+        $table->dropColumn('deleted_at');
     }
 }

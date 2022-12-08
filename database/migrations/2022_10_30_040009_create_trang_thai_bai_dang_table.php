@@ -13,10 +13,12 @@ class CreateTrangThaiBaiDangTable extends Migration
      */
     public function up()
     {
-        Schema::create('trang_thai_bai_dang', function (Blueprint $table) {
+        Schema::create('lien-he', function (Blueprint $table) {
             $table->id();
-            $table->Integer('ma');
-            $table->string('ten');
+            $table->string('ten_nguoi_lien_he');
+            $table->string('email');
+            $table->Integer('so_dien_thoai');
+            $table->string('noi_dung');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,5 +32,6 @@ class CreateTrangThaiBaiDangTable extends Migration
     public function down()
     {
         Schema::dropIfExists('trang_thai_bai_dang');
+        $table->dropColumn('deleted_at');
     }
 }

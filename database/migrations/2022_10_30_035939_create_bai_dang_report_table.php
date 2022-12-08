@@ -20,11 +20,11 @@ class CreateBaiDangReportTable extends Migration
             $table->softDeletes();
         });
         Schema::table('bai_dang_report', function (Blueprint $table) {
-            $table->unsignedInteger('bai_dang_id');
+            $table->unsignedBigInteger('bai_dang_id');
             $table->foreign('bai_dang_id')->references('id')->on('bai_dang');
         });
         Schema::table('bai_dang_report', function (Blueprint $table) {
-            $table->unsignedInteger('nguoi_dung_id');
+            $table->unsignedBigInteger('nguoi_dung_id');
             $table->foreign('nguoi_dung_id')->references('id')->on('nguoi_dung');
         });
     }
@@ -37,5 +37,6 @@ class CreateBaiDangReportTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bai_dang_report');
+        $table->dropColumn('deleted_at');
     }
 }

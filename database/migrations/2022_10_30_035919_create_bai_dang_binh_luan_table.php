@@ -17,15 +17,16 @@ class CreateBaiDangBinhLuanTable extends Migration
             $table->id();
             $table->string('noi_dung');
             $table->dateTime('thoi_gian');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::table('bai_dang_binh_luan', function (Blueprint $table) {
-            $table->unsignedInteger('bai_dang_id');
+            $table->unsignedBigInteger('bai_dang_id');
             $table->foreign('bai_dang_id')->references('id')->on('bai_dang');
         });
         Schema::table('bai_dang_binh_luan', function (Blueprint $table) {
-            $table->unsignedInteger('nguoi_dung_id');
+            $table->unsignedBigInteger('nguoi_dung_id');
             $table->foreign('nguoi_dung_id')->references('id')->on('nguoi_dung');
         });
     }
@@ -38,5 +39,6 @@ class CreateBaiDangBinhLuanTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bai_dang_binh_luan');
+        $table->dropColumn('deleted_at');
     }
 }

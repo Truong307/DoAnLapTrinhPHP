@@ -21,7 +21,7 @@ class CreateThongSoTable extends Migration
             $table->softDeletes();
         });
         Schema::table('thong_so', function (Blueprint $table) {
-            $table->unsignedInteger('loai_do_vat_id');
+            $table->unsignedBigInteger('loai_do_vat_id');
             $table->foreign('loai_do_vat_id')->references('id')->on('loai_do_vat');
         });
     }
@@ -34,5 +34,6 @@ class CreateThongSoTable extends Migration
     public function down()
     {
         Schema::dropIfExists('thong_so');
+        $table->dropColumn('deleted_at');
     }
 }

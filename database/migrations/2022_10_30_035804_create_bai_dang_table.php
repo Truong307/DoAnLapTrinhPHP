@@ -19,23 +19,25 @@ class CreateBaiDangTable extends Migration
             $table->string('tieu_de');
             $table->string('noi_dung');
             $table->string('tinh_tp');
-            $table->string('quan_huyen');
-            $table->string('phuong_xa');
-            $table->string('so_dien_thoai');
-            $table->dateTime('thoi_gian');
+            $table->string('quan_huyen')->nullable();
+            $table->string('phuong_xa')->nullable();
+            $table->string('so_dien_thoai')->nullable();
+            $table->dateTime('thoi_gian')->nullable();
+            $table->string('anh')->nullable();
+            $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::table('bai_dang', function (Blueprint $table) {
-            $table->unsignedInteger('loai_do_vat_id');
+            $table->unsignedBigInteger('loai_do_vat_id')->nullable();
             $table->foreign('loai_do_vat_id')->references('id')->on('loai_do_vat');
         });
         Schema::table('bai_dang', function (Blueprint $table) {
-            $table->unsignedInteger('nguoi_dung_id');
+            $table->unsignedBigInteger('nguoi_dung_id');
             $table->foreign('nguoi_dung_id')->references('id')->on('nguoi_dung');
         });
         Schema::table('bai_dang', function (Blueprint $table) {
-            $table->unsignedInteger('trang_thai_bai_dang_id');
+            $table->unsignedBigInteger('trang_thai_bai_dang_id')->nullable();
             $table->foreign('trang_thai_bai_dang_id')->references('id')->on('trang_thai_bai_dang');
         });
     }
@@ -48,5 +50,6 @@ class CreateBaiDangTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bai_dang');
+        $table->dropColumn('deleted_at');
     }
 }

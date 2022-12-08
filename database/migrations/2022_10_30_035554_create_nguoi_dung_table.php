@@ -16,13 +16,13 @@ class CreateNguoiDungTable extends Migration
         Schema::create('nguoi_dung', function (Blueprint $table) {
             $table->id();
             $table->string('ten');
-            $table->string('username');
-            $table->string('password');
-            $table->string('so_dien_thoai');
+            $table->string('ten_dang_nhap');
+            $table->string('mat_khau');
+            $table->string('so_dien_thoai')->nullable();
             $table->string('email');
-            $table->string('dia_chi');
-            $table->Integer('loai'); //0 la admin, 1 la user
-            $table->Integer('trang_thai'); //0 la online, 1 la offline
+            $table->string('dia_chi')->nullable();
+            $table->Integer('loai'); //1 la admin, 2 la user
+            $table->Integer('trang_thai')->nullable(); //1 la online, 2 la offline
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,5 +36,6 @@ class CreateNguoiDungTable extends Migration
     public function down()
     {
         Schema::dropIfExists('nguoi_dung');
+        $table->dropColumn('deleted_at');
     }
 }

@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\NguoiDung;
 
 
 class BaiDang extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'bai_dang';
 
@@ -22,6 +25,21 @@ class BaiDang extends Model
         'so_dien_thoai',
         'thoi_gian',
         'anh',
-        'path'
+        'path',
+        'nguoi_dung_id',
+        'loai_do_vat_id'
     ];
+
+    public function nguoiDang()
+    {
+        return $this->beLongsTo(NguoiDung::class, 'nguoi_dung_id');
+    }
+    public function loaiDoVat()
+    {
+        return $this->beLongsTo(LoaiDoVat::class,'loai_do_vat_id');
+    }
+    public function comments()
+    {
+        return $this->hasMany(BinhLuan::class)->whereNull('parent_id')->orderBy('id', 'desc');
+    }
 }

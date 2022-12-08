@@ -15,16 +15,16 @@ class CreateBaiDangThongSoDoVatTable extends Migration
     {
         Schema::create('bai_dang_thong_so_do_vat', function (Blueprint $table) {
             $table->id();
-            $table->string('mo_ta');
+            $table->string('mo_ta')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::table('bai_dang_thong_so_do_vat', function (Blueprint $table) {
-            $table->unsignedInteger('bai_dang_id');
+            $table->unsignedBigInteger('bai_dang_id');
             $table->foreign('bai_dang_id')->references('id')->on('bai_dang');
         });
         Schema::table('bai_dang_thong_so_do_vat', function (Blueprint $table) {
-            $table->unsignedInteger('thong_so_id');
+            $table->unsignedBigInteger('thong_so_id');
             $table->foreign('thong_so_id')->references('id')->on('thong_so');
         });
     }
@@ -37,5 +37,6 @@ class CreateBaiDangThongSoDoVatTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bai_dang_thong_so_do_vat');
+        $table->dropColumn('deleted_at');
     }
 }

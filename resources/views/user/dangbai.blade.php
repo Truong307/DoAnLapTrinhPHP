@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog-Z Contact page</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="css/templatemo-style.css">
+    <title>Tìm đồ thất lạc</title>
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('fontawesome/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/templatemo-style.css')}}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
@@ -43,9 +43,9 @@ https://templatemo.com/tm-556-catalog-z
     </div>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('trang-chu') }}">
+            <a class="navbar-brand" href="{{ route('user-trang-chu') }}">
                 <i class="fas fa-film mr-2"></i>
-                Catalog-Z
+                timdoVTS.com
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
@@ -53,26 +53,26 @@ https://templatemo.com/tm-556-catalog-z
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-1" href="{{ route('trang-chu') }}">Trang Chủ</a>
+                        <a class="nav-link nav-link-1" href="{{ route('user-trang-chu') }}">Trang Chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-2 active" aria-current="page" href="{{ route('dang-bai') }}">Đăng Bài</a>
+                        <a class="nav-link nav-link-2 active" aria-current="page" href="{{ route('user-dang-bai') }}">Đăng Bài</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-3" href="{{ route('meo-tim-do') }}">Mẹo tìm đồ</a>
+                        <a class="nav-link nav-link-3" href="{{ route('user-meo-tim-do') }}">Mẹo tìm đồ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-4" href="{{ route('canh-bao-lua-dao') }}">Cảnh Báo Lừa Đảo</a>
+                        <a class="nav-link nav-link-4" href="{{ route('user-canh-bao-lua-dao') }}">Cảnh Báo Lừa Đảo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-5" href="{{ route('ho-so') }}">Hồ Sơ</a>
+                        <a class="nav-link nav-link-5" href="{{ route('user-ho-so') }}">Hồ Sơ</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="img/hero.jpg"></div>
+    <div class="tm-hero d-flex justify-content-center align-items-center" data-parallax="scroll" data-image-src="{{asset('img/hero.jpg')}}"></div>
     <div class="container-fluid tm-mt-60">
         <div class="row tm-mb-50">
             <!-- <div class="col-lg-4 col-12 mb-5">
@@ -108,59 +108,62 @@ https://templatemo.com/tm-556-catalog-z
                     </ul>
                 </div>
             </div> -->
-            <form action="{{ route('xl-bai-dang') }}" enctype="multipart/form-data" id="form-dang-nhap" method="POST">
+            <form action="{{ route('user-xl-bai-dang') }}" enctype="multipart/form-data" id="form-dang-nhap" method="POST">
                 @csrf
-                <div class="col-lg-4 col-12 mb-5" id="content">
+                <div class="col-lg-4 col-12 mb-5">
                     <h2 class="tm-text-primary mb-5">Đăng Tin Mới</h2>
+                </div>
+                <div class="col-lg-4 col-12 mb-5" id="content">
+
                     <!-- <form id="contact-form" action="" method="POST" class="tm-contact-form mx-auto"> -->
                     <!-- Thông tin đăng bài -->
                     <div class="form-group">
                         <h5>Tiêu Đề</h5>
-                        <textarea rows="8" name="tieu_de" class="form-control rounded-0" id="wi-he" placeholder="Tiêu đề: " required=></textarea>
+                        <!-- /*=========COPY============*/ -->
+                        <textarea rows="8" style="height: 50px;" name="tieu_de" class="form-control rounded-0 khung" id="wi-he" placeholder="Tiêu đề: " required=></textarea>
+                        <!-- /*=========COPY============*/ -->
                     </div>
                     <div class="form-group">
-                        <h5>Chọn Loại Tin</h5>
-                        <input name="loai_tin" type="radio" value="0"> Tin mất đồ <br>
-                        <input name="loai_tin" type="radio" value="1"> Tin nhặt đồ
+                        <select class="form-control" id="contact-select" name="loai_tin">
+                            <option value="">Chọn loại tin</option>
+                            <option value="0">Tin mất đồ</option>
+                            <option value="1">Tin nhặt đồ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="contact-select" name="loai_do_vat">
+                            <option disabled="disabled" selected="selected">Chọn loại đồ vật</option>
+                            @foreach($lsLoaiDoVat as $loaiDoVat)
+                            <option value="{{ $loaiDoVat->id }}"> {{$loaiDoVat->ten}}</option>
+                            @endforeach
+
+                        </select>
                     </div>
                     <div class="form-group">
                         <div>
                             <h5>Thời Gian</h5>
-                            <input type="datetime-local" id="meeting-time" name="thoi_gian" value="2018-06-12T19:30" min="2018-06-07T00:00" max="2023-12-31T00:00">
+                            <input type="datetime-local" id="meeting-time" name="thoi_gian"  min="2018-06-07T00:00" max="2023-12-31T00:00">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <h5>Số Điện Thoại</h5>
+                        <input class="form-control" type="text" name="so_dien_thoai">
                     </div>
                     <!-- </form> -->
                 </div>
 
                 <div class="col-lg-4 col-12 mb-5" id="content-1">
                     <div class="tm-address-col">
-                        <div class="form-group">
-                            <div>
-                                <h5>Số Điện Thoại</h5>
-                                <input type="text" name="so_dien_thoai">
-                            </div>
 
-                            <h5>Chọn Khu Vực</h5>
-                            <select class="form-control" id="contact-select" name="tinh_tp">
-                                <option value="">Chọn Tỉnh/Tp</option>
-                                <option value="TP Hồ Chí Minh">TP Hồ Chí Minh</option>
-                                <option value="Đà Nẵng">Đà Nẵng</option>
-                                <option value="Hà Nội">Hà Nội</option>
-                            </select>
+                        <div class="form-group">
+                            <h5>Khu Vực</h5>
+                            <input class="form-control" type="text" name="tinh_tp" placeholder="Tỉnh/Thành phố">
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="contact-select" name="quan_huyen">
-                                <option value="">Chọn Quận/Huyện</option>
-                                <option value="Quận 1">Quận 1</option>
-                                <option value="Quận 2">Quận 2</option>
-                            </select>
+                            <input class="form-control" type="text" name="quan_huyen" placeholder="Quận/Huyện">
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="contact-select" name="phuong_xa">
-                                <option value="">Chọn Phường/Xã</option>
-                                <option value="Xã 1">Xã 1</option>
-                                <option value="Xã 2">Xã 2</option>
-                            </select>
+                            <input class="form-control" type="text" name="phuong_xa" placeholder="Phường/Xã">
                         </div>
                         <!-- <div class="form-group">
                         <input type="text" name="name" class="form-control rounded-0" placeholder="Name" required />
@@ -181,7 +184,12 @@ https://templatemo.com/tm-556-catalog-z
                     </div>-->
                         <div class="form-group">
                             <h5>Nội Dung</h5>
-                            <textarea rows="8" name="noi_dung" class="form-control rounded-0 khung" placeholder="Nội dung" required=></textarea>
+                            <!-- /*=========COPY============*/ -->
+                            <textarea rows="8" style="height: 50px;" name="noi_dung" class="form-control rounded-0 khung" placeholder="Nội dung" required=></textarea>
+                            <!-- /*=========COPY============*/ -->
+                        </div>
+                        <div class="form-group tm-text-right" id="button">
+                            <button type="submit" class="btn btn-primary">Đăng Bài</button>
                         </div>
                     </div>
                 </div>
@@ -190,19 +198,15 @@ https://templatemo.com/tm-556-catalog-z
                 <!-- <div class="mapouter mb-4">
                         <div class="gmap-canvas"> -->
                 <div id="content-2">
-                    <h4 class="tm-text-primary mb-5">Chọn hình</h4>
-                    <form action="">
-                        <img src="" alt="" id="image" width="250px" height="250px">
-                        <input type="file" id="imageFile" name="image" onchange="chooseFile(this)" accept="image/gif, image/jpeg, image/png, image/jpg">
-                    </form>
+                    <h5>Chọn hình</h5>
+                    <img src="" alt="" id="image" width="250px" height="250px">
+                    <input type="file" id="imageFile" name="image[]" multiple onchange="chooseFile(this)" accept="image/gif, image/jpeg, image/png, image/jpg">
                 </div>
                 <!-- </div> -->
                 <!-- </div> -->
                 <!-- </div> -->
 
-                <div class="form-group tm-text-right" id="button">
-                    <button type="submit" class="btn btn-primary">Đăng Bài</button>
-                </div>
+
             </form>
         </div>
         <!-- </div> -->
@@ -222,9 +226,9 @@ https://templatemo.com/tm-556-catalog-z
 
 
     </div>
-    <div class="row tm-mb-74 tm-people-row">
+    <!-- <div class="row tm-mb-74 tm-people-row">
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5">
-            <img src="img/people-1.jpg" alt="Image" class="mb-4 img-fluid">
+            <img src="{{asset('img/people-1.jpg')}}" alt="Image" class="mb-4 img-fluid">
             <h2 class="tm-text-primary mb-4">Ryan White</h2>
             <h3 class="tm-text-secondary h5 mb-4">Chief Executive Officer</h3>
             <p class="mb-4">
@@ -238,7 +242,7 @@ https://templatemo.com/tm-556-catalog-z
             </ul>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5">
-            <img src="img/people-2.jpg" alt="Image" class="mb-4 img-fluid">
+            <img src="{{asset('img/people-2.jpg')}}" alt="Image" class="mb-4 img-fluid">
             <h2 class="tm-text-primary mb-4">Catherine Pinky</h2>
             <h3 class="tm-text-secondary h5 mb-4">Chief Marketing Officer</h3>
             <p class="mb-4">
@@ -252,7 +256,7 @@ https://templatemo.com/tm-556-catalog-z
             </ul>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5">
-            <img src="img/people-3.jpg" alt="Image" class="mb-4 img-fluid">
+            <img src="{{asset('img/people-3.jpg')}}" alt="Image" class="mb-4 img-fluid">
             <h2 class="tm-text-primary mb-4">Johnny Brief</h2>
             <h3 class="tm-text-secondary h5 mb-4">Accounting Executive</h3>
             <p class="mb-4">
@@ -266,7 +270,7 @@ https://templatemo.com/tm-556-catalog-z
             </ul>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-5">
-            <img src="img/people-4.jpg" alt="Image" class="mb-4 img-fluid">
+            <img src="{{asset('img/people-4.jpg')}}" alt="Image" class="mb-4 img-fluid">
             <h2 class="tm-text-primary mb-4">George Nelson</h2>
             <h3 class="tm-text-secondary h5 mb-4">Creative Art Director #C69</h3>
             <p class="mb-4">
@@ -279,25 +283,41 @@ https://templatemo.com/tm-556-catalog-z
                 <li><a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a></li>
             </ul>
         </div>
-    </div>
+    </div> -->
     </div> <!-- container-fluid, tm-container-content -->
 
     <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
         <div class="container-fluid tm-container-small">
             <div class="row">
-                <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
-                    <h3 class="tm-text-primary mb-4 tm-footer-title">About Catalog-Z</h3>
-                    <p>Catalog-Z is free Bootstrap 5 Alpha 2 HTML Template for video and photo websites. You can freely
-                        use this TemplateMo layout for a front-end integration with any kind of CMS website.</p>
+                <div class="col-lg-5 col-md-12 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">Giới thiệu trang Tìm Đồ Thất Lạc</h3>
+                    <h6>Đã bao giờ bạn bị rơi ví, mất giấy tờ, thất lạc thú cưng yêu quý của bạn chưa?</h6>
+                    <p>Nếu đã từng lâm vào hoàn cảnh như vậy thì chắc chắn mọi người sẽ tìm cách để tìm lại những thứ mình bị mất.
+                        Trang web <a rel="sponsored" href="{{route('user-trang-chu')}}">timdoVTS.com</a> được sinh ra để làm điều đó. </p>
+                    <p>Tại đây mọi người có thể :
+
+                    <div>- Đăng tin tìm đồ, nhặt được đồ.</div>
+                    <div>- Đăng tin tìm thú cưng/ bắt được thú cưng bị lạc.</div>
+                    <div>- Tìm người thân thất lạc/ gặp người thất lạc thì đăng tin giúp tìm người nhà.</div>
+                    <div>- Đăng tin cho đồ không dùng nữa để người đang thiếu có thể lấy, tránh lãng phí tài nguyên cho xã hội.</div>
+                    </p>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
-                    <h3 class="tm-text-primary mb-4 tm-footer-title">Our Links</h3>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">Thông tin liên hệ</h3>
                     <ul class="tm-footer-links pl-0">
-                        <li><a href="#">Advertise</a></li>
-                        <li><a href="#">Support</a></li>
-                        <li><a href="#">Our Company</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <a>Có thể liên hệ qua các cách sau: </a> <br>
+                        <a>- Qua email </a>
+                        <ul>
+                            <a class="tm-text-gray" rel="sponsored" target="_parent">0306201396@caothang.edu.vn</a>
+                            <a class="tm-text-gray" rel="sponsored" target="_parent">0306201407@caothang.edu.vn</a>
+                            <a class="tm-text-gray" rel="sponsored" target="_parent">0306201377@caothang.edu.vn</a>
+                        </ul>
+                        <a>- Qua form liên hệ </a>
+                        <ul>
+                        <li><a href="{{ route('user-lien-he') }}">form</a></li>
+                        </ul>
                     </ul>
+
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
                     <ul class="tm-social-links d-flex justify-content-end pl-0 mb-5">
@@ -306,22 +326,22 @@ https://templatemo.com/tm-556-catalog-z
                         <li class="mb-2"><a href="https://instagram.com"><i class="fab fa-instagram"></i></a></li>
                         <li class="mb-2"><a href="https://pinterest.com"><i class="fab fa-pinterest"></i></a></li>
                     </ul>
-                    <a href="#" class="tm-text-gray text-right d-block mb-2">Terms of Use</a>
-                    <a href="#" class="tm-text-gray text-right d-block">Privacy Policy</a>
+                    <!-- <a href="#" class="tm-text-gray text-right d-block mb-2">Terms of Use</a>
+                    <a href="#" class="tm-text-gray text-right d-block">Privacy Policy</a> -->
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8 col-md-7 col-12 px-5 mb-3">
-                    Copyright 2020 Catalog-Z Company. All rights reserved.
+                    Trang web được xây dựng năm 2022 từ trường Cao Đẳng Kỹ Thuật Cao Thắng
                 </div>
-                <div class="col-lg-4 col-md-5 col-12 px-5 text-right">
-                    Designed by <a href="https://templatemo.com" class="tm-text-gray" rel="sponsored" target="_parent">TemplateMo</a>
+                <div class="col-lg-4 col-md-10 col-20 px-20 text-right">
+                    Được xây dựng bởi <a class="tm-text-gray" rel="sponsored" target="_parent">Đan Trường-Văn Vỹ-Kim Sơn</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="js/plugins.js"></script>
+    <script src="{{asset('js/plugins.js')}}"></script>
     <script>
         $(window).on("load", function() {
             $('body').addClass('loaded');

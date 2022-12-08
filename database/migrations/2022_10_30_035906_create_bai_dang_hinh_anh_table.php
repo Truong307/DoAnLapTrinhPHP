@@ -15,12 +15,13 @@ class CreateBaiDangHinhAnhTable extends Migration
     {
         Schema::create('bai_dang_hinh_anh', function (Blueprint $table) {
             $table->id();
-            $table->string('hinh_anh');
+            $table->string('hinh_anh')->nullable();
+            $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
         Schema::table('bai_dang_hinh_anh', function (Blueprint $table) {
-            $table->unsignedInteger('bai_dang_id');
+            $table->unsignedBigInteger('bai_dang_id');
             $table->foreign('bai_dang_id')->references('id')->on('bai_dang');
         });
     }
@@ -33,5 +34,6 @@ class CreateBaiDangHinhAnhTable extends Migration
     public function down()
     {
         Schema::dropIfExists('bai_dang_hinh_anh');
+        $table->dropColumn('deleted_at');
     }
 }
