@@ -29,8 +29,6 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-
-
 // chưa đăng nhập
 Route::get('/', [GuestController::class, 'trangchu'])->name('trang-chu');
 Route::get('/trangchu', [GuestController::class, 'trangchu'])->name('trang-chu');
@@ -38,9 +36,6 @@ Route::get('/canhbaoluadao', [GuestController::class, 'canhbaoluadao'])->name('c
 Route::get('/meotimdo', [GuestController::class, 'meotimdo'])->name('meo-tim-do');
 Route::get('/chitietbaidang/{id}', [GuestController::class, 'chitietbaidang'])->name('chi-tiet-bai-dang');
 Route::get('/tim-kiem', [GuestController::class, 'timKiem'])->name('tim-kiem');
-//liên hệ
-Route::get('/lien-he', [GuestController::class, 'lienHe'])->name('lien-he');
-Route::post('/lien-he', [GuestController::class, 'xuLyGuiLienHe'])->name('xl-gui-lien-he');
 
 // đăng nhập
 Route::get('dang-nhap', [DangNhapController::class, 'dangNhap'])->name('dang-nhap')->middleware('guest');
@@ -87,10 +82,6 @@ Route::get('/user/xu-ly-bao-cao', [UserController::class, 'xlBaoCao'])->name('xl
 Route::get('/user/xu-ly-theo-doi', [UserController::class, 'xlTheoDoi'])->name('xl-theo-doi');
 Route::get('/user/xu-ly-huy-theo-doi', [UserController::class, 'xlHuyTheoDoi'])->name('xl-huy-theo-doi');
 
-//liên hệ
-Route::get('/lien-he', [UserController::class, 'lienHe'])->name('user-lien-he');
-Route::post('/lien-he', [UserController::class, 'xuLyGuiLienHe'])->name('user-xl-gui-lien-he');
-
 
 // chức năng admin
 Route::get('/admin/trang_quan_ly', [AdminController::class, 'trangquanly'])->name('admin-trang-quan-ly');
@@ -114,12 +105,6 @@ Route::get('/admin/danh-muc-nhat-dien-thoai', [AdminController::class, 'danhMucN
 Route::get('/admin/danh-muc-nhat-vi', [AdminController::class, 'danhMucNhatVi'])->name('admin-danh-muc-nhat-vi');
 Route::get('/admin/danh-muc-nhat-thu-cung', [AdminController::class, 'danhMucNhatThuCung'])->name('admin-danh-muc-nhat-thu-cung');
 
-//danh sách bình luận
-Route::get('/admin/danh-sach-binh-luan', [AdminController::class, 'danhSachBinhLuan'])->name('admin-danh-sach-binh-luan');
-Route::post('/admin/xoa-binh-luan/{id}', [AdminController::class, 'xoaBinhLuan'])->name('admin-xoa-binh-luan');
-
-//danh sách tiêu đề
-Route::get('/admin/danh-sach-tieu-de', [AdminController::class, 'danhSachTieuDe'])->name('admin-danh-sach-tieu-de');
 // quản lý báo cáo
 Route::get('/admin/quan-ly-bao-cao', [AdminController::class, 'danhMucBaoCao'])->name('admin-danh-muc-bao-cao');
 // xóa bài viết

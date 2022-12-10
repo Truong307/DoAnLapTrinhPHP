@@ -136,7 +136,7 @@
                             <ul class="nav side-menu">
                                 <li><a><i class="fa fa-bug"></i> Bài viết bị báo cáo <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                    <li><a href="{{ route('admin-danh-muc-bao-cao') }}">Danh sách</a></li>
+                                    <li><a href="{{ route('admin-danh-muc-bao-cao') }}">Danh Sách</a></li>
                                         <li><a href="projects.html">Projects</a></li>
                                         <li><a href="project_detail.html">Project Detail</a></li>
                                         <li><a href="contacts.html">Contacts</a></li>

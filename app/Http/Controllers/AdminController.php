@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BaiDang;
-use App\Models\BaoCao;
-use App\Models\BinhLuan;
 use App\Models\LoaiDoVat;
 use App\Models\NguoiDung;
+use App\Models\BaoCao;
+use App\Models\BinhLuan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -76,6 +76,60 @@ class AdminController extends Controller
         } else {
             return redirect()->route('trang-chu');
         }
+    }
+    public function danhMucBaoCao()
+    {
+        if (Auth::id() != null) {
+            $admin = Auth::user();
+            if ($admin->loai == 1) {
+                $lsBaoCao=BaoCao::all();
+                $lsDangBaiAll = DB::table('bai_dang')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
+                $lsNguoiDung = DB::table('nguoi_dung')->where('loai', '2')->get();
+                return view('admin\danh-sach-bao-cao')->with(compact('lsBaoCao','lsDangBaiAll','lsNguoiDung'));
+            } else {
+                return redirect()->route('user-trang-chu');
+            }
+        } else {
+            return redirect()->route('trang-chu');
+        }
+    }
+    //thêm 3 hàm xóa bài đăng xóa báo cáo với xóa bình luận
+    public function xoaBaiDang($id1,$id2)
+    {
+        $baiDang=BaiDang::find($id1);
+        if(empty($baiDang))
+        {
+            return 'Không tìm thấy bài đăng';
+        }
+        $BaoCao=BaoCao::find($id2);
+        if(empty($BaoCao))
+        {
+            return 'Không tìm thấy Báo Cáo';
+        }
+        $BinhLuan=BinhLuan::where('bai_dang_id',$id1)->delete();
+        $baiDang->delete();
+        $BaoCao->delete();
+        return redirect()->route('admin-danh-muc-bao-cao');
+    }
+    public function xoaBaoCao($id)
+    {
+        $BaoCao=BaoCao::find($id);
+        if(empty($BaoCao))
+        {
+            return 'Không tìm thấy Báo Cáo';
+        }
+        $BaoCao->delete();
+        return redirect()->route('admin-danh-muc-bao-cao');
+    }
+    public function xoaBinhLuan($id)
+    {
+        $BinhLuan=BinhLuan::find($id);
+        if(empty($BinhLuan))
+        {
+            return 'Không tìm thấy Bình Luận';
+        }
+        $BinhLuan = DB::table('bai_dang_binh_luan')->where('bai_dang_id',$id)->delete();
+        return redirect()->route('admin-danh-muc-bao-cao');
     }
     public function danhSachNguoiDung()
     {
@@ -227,7 +281,7 @@ class AdminController extends Controller
     public function timKiem(Request $request)
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('tieu_de', 'like', '%' . $request->tim_kiem . '%')
+        $lsDangBai = DB::table('bai_dang')->where('tieu_de', 'like', '%' . $request->tim_kiem . '%')
             ->orWhere('noi_dung', 'like', '%' . $request->tim_kiem . '%')
             ->orWhere('tinh_tp', 'like', '%' . $request->tim_kiem . '%')
             ->orWhere('quan_huyen', 'like', '%' . $request->tim_kiem . '%')
@@ -240,116 +294,54 @@ class AdminController extends Controller
     public function danhMucMatGiayTo()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id','1')->where('loai','0')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id','1')->where('loai','0')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
 
     public function danhMucMatDienThoai()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '2')->where('loai', '0')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '2')->where('loai', '0')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
     public function danhMucMatVi()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '3')->where('loai', '0')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '3')->where('loai', '0')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
 
     public function danhMucMatThuCung()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '4')->where('loai', '0')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '4')->where('loai', '0')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
 
     public function danhMucNhatGiayTo()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '1')->where('loai', '1')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '1')->where('loai', '1')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
 
     public function danhMucNhatDienThoai()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '2')->where('loai', '1')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '2')->where('loai', '1')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
     public function danhMucNhatVi()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '3')->where('loai', '1')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '3')->where('loai', '1')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
     }
 
     public function danhMucNhatThuCung()
     {
         $lsUser = DB::table('nguoi_dung')->get();
-        $lsDangBai = DB::table('bai_dang')->whereNull('deleted_at')->where('loai_do_vat_id', '4')->where('loai', '1')->paginate(16);
+        $lsDangBai = DB::table('bai_dang')->where('loai_do_vat_id', '4')->where('loai', '1')->paginate(16);
         return view('admin\danh-muc', compact('lsDangBai', 'lsUser'));
-    }
-
-    public function danhSachBinhLuan()
-    {
-        $lsBinhLuan = BinhLuan::all();
-        return view('admin\danh-sach-binh-luan', compact('lsBinhLuan'));
-    }
-
-    public function danhSachTieuDe()
-    {
-        $lsDangBai = BaiDang::get();
-        return view('admin\danh-sach-tieu-de', compact('lsDangBai'));
-    }
-
-    public function danhMucBaoCao()
-    {
-        if (Auth::id() != null) {
-            $admin = Auth::user();
-            if ($admin->loai == 1) {
-                $lsBaoCao=BaoCao::all();
-                $lsDangBaiAll = DB::table('bai_dang')->whereNull('deleted_at')->orderBy('id', 'desc')->get();
-                $lsNguoiDung = DB::table('nguoi_dung')->where('loai', '2')->get();
-                return view('admin\danh-sach-bao-cao')->with(compact('lsBaoCao','lsDangBaiAll','lsNguoiDung'));
-            } else {
-                return redirect()->route('user-trang-chu');
-            }
-        } else {
-            return redirect()->route('trang-chu');
-        }
-    }
-
-    public function xoaBaiDang($id1,$id2)
-    {
-        $baiDang=BaiDang::find($id1);
-        if(empty($baiDang))
-        {
-            return 'Không tìm thấy bài đăng';
-        }
-        $BaoCao=BaoCao::find($id2);
-        if(empty($BaoCao))
-        {
-            return 'Không tìm thấy Báo Cáo';
-        }
-        $BinhLuan=BinhLuan::where('bai_dang_id',$id1)->delete();
-        $baiDang->delete();
-        $BaoCao->delete();
-        return redirect()->route('admin-danh-muc-bao-cao');
-    }
-    public function xoaBaoCao($id)
-    {
-        $BaoCao=BaoCao::find($id);
-        if(empty($BaoCao))
-        {
-            return 'Không tìm thấy Báo Cáo';
-        }
-        $BaoCao->delete();
-        return redirect()->route('admin-danh-muc-bao-cao');
-    }
-    public function xoaBinhLuan($id)
-    {
-        $BinhLuan=BinhLuan::where('id',$id)->delete();
-        return redirect()->route('admin-danh-sach-binh-luan');
     }
 }
